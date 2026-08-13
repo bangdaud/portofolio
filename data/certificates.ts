@@ -14,7 +14,7 @@ export interface Certificate {
   credentialId?: string;     // ID sertifikat (opsional)
   credentialUrl: string;     // Link ke sertifikat asli (isi "#" jika tidak ada)
   image: string;             // Path gambar dari /public, misal "/images/certificates/aws.png"
-  category: "programming" | "cloud" | "ai" | "design" | "management" |"DataAnalyst" | "SoftwareEngineering" | "other";
+  category: "programming" | "cloud" | "ai" | "design" | "management" | "dataanalyst" | "softwareengineering" | "other";
   description?: string;      // Deskripsi singkat (opsional)
 }
 
@@ -28,8 +28,7 @@ export const certificates: Certificate[] = [
     credentialId: "CCSE-060726-01-1-00116",
     credentialUrl: "#",
     image: "/images/certificates/RevoU.png",
-    category: "SoftwareEngineering",
-    description: "Sertifikasi dasar Intro to Software enggineering.",
+    category: "softwareengineering",
   },
   {
     id: 2,
@@ -62,7 +61,7 @@ export const certificates: Certificate[] = [
     month: "July",
     credentialUrl: "#",
     image: "/images/certificates/Dibimbing.png",
-    category: "SoftwareEngineering",
+    category: "softwareengineering",
     description: "Berpartisipasi dalam Event Online DevOps Engineer yang membahas dasar-dasar DevOps, CI/CD, containerization, version control, dan implementasi otomatisasi pada siklus pengembangan perangkat lunak.",
   },
   {
@@ -74,7 +73,7 @@ export const certificates: Certificate[] = [
     credentialId: "HTA26-WD12-028",
     credentialUrl: "#",
     image: "/images/certificates/HaloTech Academy.png",
-    category: "DataAnalyst",
+    category: "dataanalyst",
     description: "Mengikuti seminar mengenai penerapan Data Analytics di berbagai bidang industri, mencakup proses pengumpulan, pengolahan, visualisasi, dan interpretasi data sebagai dasar pengambilan keputusan.",
   },
   {
@@ -110,7 +109,7 @@ export const certificates: Certificate[] = [
     credentialId: "DAMC-030826-01-1-00555",
     credentialUrl: "#",
     image: "/images/certificates/RevoU2.png",
-    category: "DataAnalys",
+    category: "DataAnalyst",
     description: "Sertifikasi dasar Intro to Data Analyst.",
   },
   {

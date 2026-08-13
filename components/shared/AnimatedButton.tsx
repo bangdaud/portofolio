@@ -69,7 +69,7 @@ const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
 
     // Render <a> jika ada href
     if ("href" in props && props.href !== undefined) {
-      const { href, onClick, ...rest } = props as BaseProps & { href: string; onClick?: React.MouseEventHandler<HTMLAnchorElement> };
+      const { href, onClick } = props as BaseProps & { href: string; onClick?: React.MouseEventHandler<HTMLAnchorElement> };
       return (
         <motion.a
           href={href}
@@ -87,8 +87,14 @@ const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
     }
 
     // Render <button>
-    const { href: _href, external: _ext, variant: _v, size: _s, ...buttonProps } =
-      props as BaseProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
+    const {
+  href: _href,
+  external: _ext,
+  variant: _v,
+  size: _s,
+  onDrag: _onDrag,
+  ...buttonProps
+} = props as BaseProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
     return (
       <motion.button

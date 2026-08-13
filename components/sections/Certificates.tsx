@@ -20,12 +20,14 @@ import { cn } from "@/lib/utils";
 
 // Warna badge per kategori
 const categoryColors: Record<string, string> = {
-  programming: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  SoftwareEngineering:       "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  ai:          "bg-violet-500/20 text-violet-400 border-violet-500/30",
-  DataAnalyst:      "bg-pink-500/20 text-pink-400 border-pink-500/30",
-  management:  "bg-green-500/20 text-green-400 border-green-500/30",
-  other:       "bg-gray-500/20 text-gray-400 border-gray-500/30",
+  programming:       "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  softwareengineering: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
+  ai:                "bg-violet-500/20 text-violet-400 border-violet-500/30",
+  dataanalyst:       "bg-pink-500/20 text-pink-400 border-pink-500/30",
+  management:        "bg-green-500/20 text-green-400 border-green-500/30",
+  cloud:             "bg-sky-500/20 text-sky-400 border-sky-500/30",
+  design:            "bg-orange-500/20 text-orange-400 border-orange-500/30",
+  other:             "bg-gray-500/20 text-gray-400 border-gray-500/30",
 };
 
 export default function Certificates() {
