@@ -1,17 +1,9 @@
 "use client";
 
-// ============================================================
-// ANIMATED BUTTON
-// Tombol dengan animasi hover dan tap.
-// Variant: primary (gradient), secondary (outline), ghost.
-// Jika ada prop href, render sebagai <a> tag.
-// ============================================================
-
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
 
-// Props dipisah: button props + custom props
 interface BaseProps {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "ghost";
@@ -20,10 +12,16 @@ interface BaseProps {
   external?: boolean;
 }
 
-// Dua tipe: link (ada href) atau button
-type AnimatedButtonProps =
-  | (BaseProps & { href: string; onClick?: React.MouseEventHandler<HTMLAnchorElement> } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">)
-  | (BaseProps & { href?: undefined } & React.ButtonHTMLAttributes<HTMLButtonElement>);
+type LinkProps = BaseProps & {
+  href: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+};
+
+type ButtonProps = BaseProps & {
+  href?: never;
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "href">;
+
+type AnimatedButtonProps = LinkProps | ButtonProps;
 
 const variantStyles = {
   primary: cn(
@@ -55,7 +53,7 @@ const springTransition = {
 
 const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
   (props, ref) => {
-    const { children, variant = "primary", size = "md", className, external } = props;
+    const { children, variant = "primary", size = "md", className } = props;
 
     const classes = cn(
       "inline-flex items-center gap-2 transition-all duration-300",
@@ -67,9 +65,9 @@ const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
       className
     );
 
-    // Render <a> jika ada href
-    if ("href" in props && props.href !== undefined) {
-      const { href, onClick } = props as BaseProps & { href: string; onClick?: React.MouseEventHandler<HTMLAnchorElement> };
+    // Render sebagai <a> jika ada href
+    if (props.href !== undefined) {
+      const { href, onClick, external } = props as LinkProps;
       return (
         <motion.a
           href={href}
@@ -86,15 +84,9 @@ const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
       );
     }
 
-    // Render <button>
-    const {
-  href: _href,
-  external: _ext,
-  variant: _v,
-  size: _s,
-  onDrag: _onDrag,
-  ...buttonProps
-} = props as BaseProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
+    // Render sebagai <button>
+    const { variant: _v, size: _s, external: _ext, ...buttonProps } =
+      props as ButtonProps;
 
     return (
       <motion.button
@@ -103,7 +95,7 @@ const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
         transition={springTransition}
-        {...(buttonProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+        {...buttonProps}
       >
         {children}
       </motion.button>
