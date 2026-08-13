@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CSS VARIABLES — Tema Dark Mode (default)
+   Warna berbasis HSL agar mudah dimanipulasi dengan Tailwind
+   ============================================================ */
+@layer base {
+  :root {
+    --background: 224 71% 4%;        /* Biru sangat gelap hampir hitam */
+    --foreground: 213 31% 91%;       /* Putih kebiruan */
+    --card: 224 71% 6%;              /* Card sedikit lebih terang dari bg */
+    --card-foreground: 213 31% 91%;
+    --border: 216 34% 17%;           /* Border subtle */
+    --input: 216 34% 17%;
+    --ring: 263 70% 50%;             /* Ungu untuk focus ring */
+    --primary: 263 70% 50%;          /* Ungu utama */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 222 47% 11%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 223 47% 11%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+    --radius: 0.75rem;
+  }
+}
+
+/* ============================================================
+   RESET & BASE STYLES
+   ============================================================ */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+    /* Scroll behavior halus untuk navigasi antar section */
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    /* Optimasi rendering font */
+  }
+
+  /* Sembunyikan scrollbar default, ganti dengan custom */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-purple-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-purple-400;
+  }
+
+  /* Seleksi teks dengan warna brand */
+  ::selection {
+    background-color: rgba(147, 51, 234, 0.3);
+    color: white;
+  }
+}
+
+/* ============================================================
+   UTILITY CLASSES KUSTOM
+   ============================================================ */
+@layer utilities {
+  /* Glassmorphism — efek kaca blur */
+  .glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* Gradient text ungu-biru */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #a855f7 0%, #60a5fa 100%);
+  }
+
+  /* Glow effect pada elemen */
+  .glow-purple {
+    box-shadow: 0 0 30px rgba(147, 51, 234, 0.3),
+                0 0 60px rgba(147, 51, 234, 0.1);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3),
+                0 0 60px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Text glow */
+  .text-glow {
+    text-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+  }
+
+  /* Noise texture overlay untuk kedalaman visual */
+  .noise-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Section padding standar */
+  .section-padding {
+    @apply py-20 px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Container max width */
+  .container-custom {
+    @apply max-w-6xl mx-auto;
+  }
+
+  /* Animasi underline hover */
+  .hover-underline {
+    @apply relative;
+  }
+
+  .hover-underline::after {
+    content: "";
+    @apply absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300;
+    background: linear-gradient(135deg, #a855f7, #60a5fa);
+  }
+
+  .hover-underline:hover::after {
+    @apply w-full;
+  }
+
+  /* Border gradient */
+  .border-gradient {
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+  }
+
+  .border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(96, 165, 250, 0.4));
+    z-index: -1;
+  }
+}
+
+/* ============================================================
+   ANIMASI GLOBAL
+   ============================================================ */
+@layer utilities {
+  /* Ripple effect untuk tombol */
+  .ripple {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ripple::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(0);
+    animation: ripple-animation 0.6s linear;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-animation {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+}
