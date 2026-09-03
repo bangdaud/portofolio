@@ -1,107 +1,80 @@
 "use client";
 
-import { motion } from "framer-motion";
+// Komponen tombol animasi — support href (link) dan button biasa
 import { cn } from "@/lib/utils";
-import { forwardRef } from "react";
 
-interface BaseProps {
+interface AnimatedButtonProps {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "ghost";
   size?: "sm" | "md" | "lg";
   className?: string;
+  href?: string;
   external?: boolean;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
-type LinkProps = BaseProps & {
-  href: string;
-  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+const variantStyles: Record<string, string> = {
+  primary:
+    "bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold hover:from-purple-500 hover:to-blue-500 shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_30px_rgba(147,51,234,0.5)] active:scale-95",
+  secondary:
+    "border border-purple-500/50 bg-transparent text-purple-300 font-semibold hover:bg-purple-500/10 hover:border-purple-400 hover:text-white active:scale-95",
+  ghost:
+    "bg-transparent text-white/60 hover:text-white hover:bg-white/5 active:scale-95",
 };
 
-type ButtonProps = BaseProps & {
-  href?: never;
-} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "href">;
-
-type AnimatedButtonProps = LinkProps | ButtonProps;
-
-const variantStyles = {
-  primary: cn(
-    "bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold",
-    "hover:from-purple-500 hover:to-blue-500",
-    "shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_30px_rgba(147,51,234,0.5)]"
-  ),
-  secondary: cn(
-    "border border-purple-500/50 bg-transparent text-purple-300 font-semibold",
-    "hover:bg-purple-500/10 hover:border-purple-400 hover:text-white"
-  ),
-  ghost: cn(
-    "bg-transparent text-white/60",
-    "hover:text-white hover:bg-white/5"
-  ),
-};
-
-const sizeStyles = {
+const sizeStyles: Record<string, string> = {
   sm: "px-4 py-2 text-sm rounded-lg",
   md: "px-6 py-3 text-base rounded-xl",
   lg: "px-8 py-4 text-lg rounded-xl",
 };
 
-const springTransition = {
-  type: "spring" as const,
-  stiffness: 400,
-  damping: 17,
-};
+export default function AnimatedButton({
+  children,
+  variant = "primary",
+  size = "md",
+  className,
+  href,
+  external = false,
+  onClick,
+  type = "button",
+  disabled = false,
+}: AnimatedButtonProps) {
+  const classes = cn(
+    "inline-flex items-center gap-2 transition-all duration-200 cursor-pointer",
+    "focus:outline-none focus:ring-2 focus:ring-purple-500/50",
+    "relative overflow-hidden hover:scale-[1.03]",
+    disabled && "opacity-50 cursor-not-allowed hover:scale-100",
+    variantStyles[variant],
+    sizeStyles[size],
+    className
+  );
 
-const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
-  (props, ref) => {
-    const { children, variant = "primary", size = "md", className } = props;
-
-    const classes = cn(
-      "inline-flex items-center gap-2 transition-all duration-300",
-      "focus:outline-none focus:ring-2 focus:ring-purple-500/50",
-      "disabled:opacity-50 disabled:cursor-not-allowed",
-      "relative overflow-hidden",
-      variantStyles[variant],
-      sizeStyles[size],
-      className
-    );
-
-    // Render sebagai <a> jika ada href
-    if (props.href !== undefined) {
-      const { href, onClick, external } = props as LinkProps;
-      return (
-        <motion.a
-          href={href}
-          onClick={onClick}
-          target={external ? "_blank" : undefined}
-          rel={external ? "noopener noreferrer" : undefined}
-          className={classes}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          transition={springTransition}
-        >
-          {children}
-        </motion.a>
-      );
-    }
-
-    // Render sebagai <button>
-    const { variant: _v, size: _s, external: _ext, ...buttonProps } =
-      props as ButtonProps;
-
+  // Render sebagai <a> jika ada href
+  if (href) {
     return (
-      <motion.button
-        ref={ref}
+      <a
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        onClick={onClick as React.MouseEventHandler<HTMLAnchorElement>}
         className={classes}
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        transition={springTransition}
-        {...buttonProps}
       >
         {children}
-      </motion.button>
+      </a>
     );
   }
-);
 
-AnimatedButton.displayName = "AnimatedButton";
-export default AnimatedButton;
+  // Render sebagai <button> native — tidak ada konflik tipe
+  return (
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={onClick as React.MouseEventHandler<HTMLButtonElement>}
+      className={classes}
+    >
+      {children}
+    </button>
+  );
+}

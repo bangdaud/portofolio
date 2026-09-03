@@ -109,7 +109,7 @@ export const certificates: Certificate[] = [
     credentialId: "DAMC-030826-01-1-00555",
     credentialUrl: "#",
     image: "/images/certificates/RevoU2.png",
-    category: "DataAnalyst",
+    category: "dataanalyst",
     description: "Sertifikasi dasar Intro to Data Analyst.",
   },
   {
